@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Catálogo de Vehículos{% endblock %} - Concesionaria</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primario: #1D4E89;
+            --color-primario-oscuro: #0F2E4F;
+            --color-whatsapp: #25D366;
+            --color-disponible: #2E7D32;
+            --color-no-disponible: #6B6B63;
+            --bg-base: #FAFAF8;
+            --bg-card: #FFFFFF;
+            --border-card: #E5E3DC;
+            --texto-primario: #1C1C1A;
+            --texto-secundario: #6B6B63;
+            --font-family: 'Inter', sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-base);
+            color: var(--texto-primario);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            min-height: calc(100vh - 160px);
+        }
+
+        footer {
+            background-color: var(--color-primario-oscuro);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        /* Buttons & Inputs globally */
+        button, select {
+            font-family: var(--font-family);
+        }
+        
+        {% block extra_css %}{% endblock %}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <a href="{% url 'inventario:index' %}" class="logo">Premium Auto</a>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {% now "Y" %} Premium Auto. Todos los derechos reservados.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

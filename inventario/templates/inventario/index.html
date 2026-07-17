@@ -1,0 +1,327 @@
+{% extends "inventario/base.html" %}
+
+{% block title %}Nuestro Catálogo{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero/Header section of page */
+    .page-header {
+        margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--color-primario-oscuro);
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+    }
+
+    .page-header p {
+        color: var(--texto-secundario);
+        font-size: 1.1rem;
+    }
+
+    /* Filters */
+    .filters-section {
+        background-color: var(--bg-card);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-card);
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-group label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--texto-secundario);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-select {
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-card);
+        border-radius: 8px;
+        font-size: 1rem;
+        color: var(--texto-primario);
+        background-color: var(--bg-base);
+        cursor: pointer;
+        outline: none;
+        transition: var(--transition);
+        min-width: 200px;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231C1C1A%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem top 50%;
+        background-size: 0.65rem auto;
+    }
+
+    .filter-select:focus {
+        border-color: var(--color-primario);
+        box-shadow: 0 0 0 3px rgba(29, 78, 137, 0.1);
+    }
+
+    .filter-btn {
+        background-color: var(--color-primario);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        align-self: flex-end;
+        height: 45px;
+    }
+
+    .filter-btn:hover {
+        background-color: var(--color-primario-oscuro);
+        transform: translateY(-1px);
+    }
+
+    .filter-btn-clear {
+        background-color: transparent;
+        color: var(--texto-secundario);
+        border: 1px solid var(--border-card);
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        align-self: flex-end;
+        height: 45px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .filter-btn-clear:hover {
+        background-color: var(--bg-base);
+        color: var(--texto-primario);
+    }
+
+    /* Grid */
+    .catalog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+
+    /* Cards */
+    .car-card {
+        background-color: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border-card);
+        overflow: hidden;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .car-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        border-color: rgba(29, 78, 137, 0.2);
+    }
+
+    .car-image-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 65%; /* 16:9 roughly */
+        background-color: var(--bg-base);
+        overflow: hidden;
+    }
+
+    .car-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .car-card:hover .car-image {
+        transform: scale(1.05);
+    }
+
+    .car-status {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: white;
+        z-index: 2;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .status-disponible { background-color: var(--color-disponible); }
+    .status-no-disponible { background-color: var(--color-no-disponible); }
+
+    .car-details {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .car-marca {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--color-primario);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+    }
+
+    .car-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--texto-primario);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .car-year {
+        font-size: 0.9rem;
+        font-weight: 500;
+        background-color: var(--bg-base);
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        color: var(--texto-secundario);
+    }
+
+    .car-price {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--texto-primario);
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-card);
+    }
+
+    .no-results {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        background-color: var(--bg-card);
+        border-radius: 12px;
+        border: 1px solid var(--border-card);
+    }
+    
+    .no-results h3 {
+        color: var(--texto-primario);
+        margin-bottom: 0.5rem;
+    }
+    .no-results p {
+        color: var(--texto-secundario);
+    }
+
+    @media (max-width: 768px) {
+        .filters-section {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .filter-btn, .filter-btn-clear {
+            align-self: stretch;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Vehículos Destacados</h1>
+    <p>Encuentra el auto ideal para ti. Calidad y confianza garantizada.</p>
+</div>
+
+<!-- Filters -->
+<form class="filters-section" method="GET" action="{% url 'inventario:index' %}">
+    <div class="filter-group">
+        <label for="marca">Marca</label>
+        <select name="marca" id="marca" class="filter-select">
+            <option value="">Todas las marcas</option>
+            {% for marca in marcas %}
+                <option value="{{ marca.id }}" {% if selected_marca == marca.id|stringformat:"s" %}selected{% endif %}>
+                    {{ marca.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <label for="ano">Año</label>
+        <select name="ano" id="ano" class="filter-select">
+            <option value="">Todos los años</option>
+            {% for ano in anos %}
+                <option value="{{ ano }}" {% if selected_ano == ano|stringformat:"s" %}selected{% endif %}>
+                    {{ ano }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="filter-btn">Filtrar</button>
+    
+    {% if selected_marca or selected_ano %}
+        <a href="{% url 'inventario:index' %}" class="filter-btn-clear">Limpiar</a>
+    {% endif %}
+</form>
+
+<!-- Catalog Grid -->
+<div class="catalog-grid">
+    {% for vehiculo in vehiculos %}
+        <a href="#" class="car-card" style="text-decoration: none;">
+            <div class="car-image-wrapper">
+                {% with main_img=vehiculo.imagenes.all.first %}
+                    {% if main_img %}
+                        <img src="{{ main_img.imagen.url }}" alt="{{ vehiculo.marca.nombre }} {{ vehiculo.modelo }}" class="car-image">
+                    {% else %}
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--texto-secundario); background:var(--bg-base); position:absolute; top:0; left:0;">
+                            <span>Sin imagen</span>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <span class="car-status status-{{ vehiculo.estatus|slugify }}">{{ vehiculo.get_estatus_display }}</span>
+            </div>
+            
+            <div class="car-details">
+                <span class="car-marca">{{ vehiculo.marca.nombre }}</span>
+                <h3 class="car-title">
+                    {{ vehiculo.modelo }}
+                    <span class="car-year">{{ vehiculo.año }}</span>
+                </h3>
+                <div class="car-price">
+                    ${{ vehiculo.precio|floatformat:0 }}
+                </div>
+            </div>
+        </a>
+    {% empty %}
+        <div class="no-results">
+            <h3>No se encontraron vehículos</h3>
+            <p>Intenta ajustar los filtros de búsqueda.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
