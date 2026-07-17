@@ -4,103 +4,155 @@
 
 {% block extra_css %}
 <style>
-    /* Hero/Header section of page */
+    /* Hero Section */
     .page-header {
-        margin-bottom: 2rem;
+        background-color: var(--color-primario-oscuro);
+        border-radius: 0;
+        padding: 6rem 3rem 8rem;
+        text-align: center;
+        color: white;
+        margin-bottom: -3rem; /* Overlap with filters */
+        position: relative;
+        overflow: hidden;
     }
     
+    .page-header::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+        pointer-events: none;
+    }
+
     .page-header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--color-primario-oscuro);
-        margin-bottom: 0.5rem;
-        letter-spacing: -1px;
+        font-family: var(--font-display, 'Playfair Display', serif);
+        font-size: 4rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+        line-height: 1.1;
     }
 
     .page-header p {
-        color: var(--texto-secundario);
+        font-family: var(--font-family);
         font-size: 1.1rem;
+        opacity: 0.8;
+        max-width: 500px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        font-weight: 400;
+        line-height: 1.6;
+        letter-spacing: 0.5px;
     }
 
-    /* Filters */
+    /* Filters - Editorial/Sharp */
+    .filters-wrapper {
+        padding: 0 2rem;
+        position: relative;
+        z-index: 10;
+        margin-bottom: 4rem;
+    }
+
     .filters-section {
-        background-color: var(--bg-card);
-        padding: 1.5rem;
-        border-radius: 12px;
+        background: var(--bg-card);
         border: 1px solid var(--border-card);
-        margin-bottom: 2rem;
+        padding: 2rem;
+        border-radius: 0;
         display: flex;
-        gap: 1.5rem;
-        align-items: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        gap: 2rem;
+        align-items: flex-end;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        max-width: 1000px;
+        margin: 0 auto;
     }
 
     .filter-group {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.75rem;
+        flex: 1;
     }
 
     .filter-group label {
-        font-size: 0.85rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: var(--texto-secundario);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 2px;
     }
 
     .filter-select {
-        padding: 0.75rem 1rem;
+        width: 100%;
+        padding: 1rem 1.25rem;
         border: 1px solid var(--border-card);
-        border-radius: 8px;
-        font-size: 1rem;
+        border-radius: 0;
+        font-size: 0.95rem;
+        font-weight: 500;
         color: var(--texto-primario);
-        background-color: var(--bg-base);
+        background-color: transparent;
         cursor: pointer;
         outline: none;
-        transition: var(--transition);
-        min-width: 200px;
+        transition: var(--transition, all 0.3s ease);
         appearance: none;
-        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231C1C1A%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%230A0A0A%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
         background-repeat: no-repeat;
-        background-position: right 1rem top 50%;
-        background-size: 0.65rem auto;
+        background-position: right 1.25rem center;
+        background-size: 1.2rem;
+    }
+
+    .filter-select:hover {
+        border-color: var(--texto-primario);
     }
 
     .filter-select:focus {
-        border-color: var(--color-primario);
-        box-shadow: 0 0 0 3px rgba(29, 78, 137, 0.1);
+        border-color: var(--color-primario-oscuro);
+        box-shadow: none;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 1rem;
     }
 
     .filter-btn {
-        background-color: var(--color-primario);
+        background-color: var(--color-primario-oscuro);
         color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
+        border: 1px solid var(--color-primario-oscuro);
+        border-radius: 0;
+        padding: 0 2.5rem;
         font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
         cursor: pointer;
-        transition: var(--transition);
-        align-self: flex-end;
-        height: 45px;
+        transition: var(--transition, all 0.3s ease);
+        height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .filter-btn:hover {
-        background-color: var(--color-primario-oscuro);
-        transform: translateY(-1px);
+        background-color: white;
+        color: var(--color-primario-oscuro);
     }
 
     .filter-btn-clear {
         background-color: transparent;
         color: var(--texto-secundario);
         border: 1px solid var(--border-card);
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
+        border-radius: 0;
+        padding: 0 1.5rem;
         font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
         cursor: pointer;
-        transition: var(--transition);
-        align-self: flex-end;
-        height: 45px;
+        transition: var(--transition, all 0.3s ease);
+        height: 54px;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
@@ -108,40 +160,42 @@
     }
 
     .filter-btn-clear:hover {
-        background-color: var(--bg-base);
-        color: var(--texto-primario);
+        border-color: var(--color-primario-oscuro);
+        color: var(--color-primario-oscuro);
     }
 
     /* Grid */
     .catalog-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 3rem;
+        padding-bottom: 5rem;
     }
 
     /* Cards */
     .car-card {
         background-color: var(--bg-card);
-        border-radius: 16px;
-        border: 1px solid var(--border-card);
+        border: 1px solid transparent;
+        border-radius: 0;
         overflow: hidden;
-        transition: var(--transition);
+        transition: var(--transition, all 0.3s cubic-bezier(0.16, 1, 0.3, 1));
         display: flex;
         flex-direction: column;
         position: relative;
+        text-decoration: none;
     }
 
     .car-card:hover {
+        border-color: var(--color-primario-oscuro);
         transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-        border-color: rgba(29, 78, 137, 0.2);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
     }
 
     .car-image-wrapper {
         position: relative;
         width: 100%;
-        padding-top: 65%; /* 16:9 roughly */
-        background-color: var(--bg-base);
+        padding-top: 65%;
+        background-color: #F3F4F6;
         overflow: hidden;
     }
 
@@ -152,99 +206,204 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s;
+        filter: grayscale(15%);
     }
 
     .car-card:hover .car-image {
         transform: scale(1.05);
+        filter: grayscale(0%);
+    }
+
+    .car-badges {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        z-index: 2;
+        pointer-events: none;
     }
 
     .car-status {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
         padding: 0.4rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
+        font-size: 0.65rem;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1.5px;
         color: white;
-        z-index: 2;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background-color: var(--color-primario-oscuro);
     }
 
-    .status-disponible { background-color: var(--color-disponible); }
-    .status-no-disponible { background-color: var(--color-no-disponible); }
+    .status-disponible { background-color: var(--color-primario-oscuro); }
+    .status-no-disponible { background-color: var(--texto-secundario); }
+
+    .car-year-badge {
+        background-color: white;
+        color: var(--color-primario-oscuro);
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: 1px solid var(--border-card);
+    }
 
     .car-details {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        position: relative;
+        background: var(--bg-card);
+        border-top: 1px solid transparent;
+        transition: border-color 0.4s ease;
+    }
+
+    .car-card:hover .car-details {
+        border-top-color: var(--border-card);
     }
 
     .car-marca {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
-        color: var(--color-primario);
+        color: var(--texto-secundario);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.25rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.75rem;
     }
 
     .car-title {
-        font-size: 1.25rem;
-        font-weight: 700;
+        font-family: var(--font-display, 'Playfair Display', serif);
+        font-size: 1.6rem;
+        font-weight: 600;
         color: var(--texto-primario);
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
     }
 
-    .car-year {
-        font-size: 0.9rem;
-        font-weight: 500;
-        background-color: var(--bg-base);
-        padding: 0.2rem 0.6rem;
-        border-radius: 6px;
-        color: var(--texto-secundario);
+    .car-price-row {
+        margin-top: auto;
+        padding-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
     }
 
     .car-price {
         font-size: 1.5rem;
-        font-weight: 800;
+        font-weight: 400;
         color: var(--texto-primario);
-        margin-top: auto;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border-card);
+        letter-spacing: -0.5px;
+    }
+    
+    .car-price span {
+        font-size: 1rem;
+        color: var(--texto-secundario);
+        font-weight: 400;
+        margin-right: 2px;
+    }
+
+    .car-action {
+        color: var(--color-primario-oscuro);
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
+
+    .car-action::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: var(--color-primario-oscuro);
+        transition: width 0.3s ease;
+    }
+
+    .car-card:hover .car-action::after {
+        width: 100%;
     }
 
     .no-results {
         grid-column: 1 / -1;
         text-align: center;
-        padding: 4rem 2rem;
-        background-color: var(--bg-card);
-        border-radius: 12px;
+        padding: 6rem 2rem;
+        background: var(--bg-card);
         border: 1px solid var(--border-card);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .no-results-icon {
+        width: 60px;
+        height: 60px;
+        background-color: var(--bg-base);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        color: var(--color-primario-oscuro);
+        border: 1px solid var(--border-card);
+    }
+
+    .no-results-icon svg {
+        width: 24px;
+        height: 24px;
     }
     
     .no-results h3 {
+        font-family: var(--font-display, 'Playfair Display', serif);
         color: var(--texto-primario);
+        font-size: 1.8rem;
         margin-bottom: 0.5rem;
+        font-weight: 600;
     }
+    
     .no-results p {
         color: var(--texto-secundario);
+        font-size: 1rem;
     }
 
     @media (max-width: 768px) {
+        .page-header {
+            padding: 4rem 1.5rem 6rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2.8rem;
+        }
+
+        .filters-wrapper {
+            padding: 0 1rem;
+        }
+
         .filters-section {
             flex-direction: column;
             align-items: stretch;
+            padding: 1.5rem;
+            gap: 1.5rem;
         }
+        
+        .filter-actions {
+            flex-direction: column;
+        }
+        
         .filter-btn, .filter-btn-clear {
-            align-self: stretch;
+            width: 100%;
+        }
+        
+        .catalog-grid {
+            grid-template-columns: 1fr;
+            padding: 0 1rem 3rem 1rem;
         }
     }
 </style>
@@ -252,75 +411,92 @@
 
 {% block content %}
 <div class="page-header">
-    <h1>Vehículos Destacados</h1>
-    <p>Encuentra el auto ideal para ti. Calidad y confianza garantizada.</p>
+    <h1>Catalogo de Vehículos</h1>
 </div>
 
 <!-- Filters -->
-<form class="filters-section" method="GET" action="{% url 'inventario:index' %}">
-    <div class="filter-group">
-        <label for="marca">Marca</label>
-        <select name="marca" id="marca" class="filter-select">
-            <option value="">Todas las marcas</option>
-            {% for marca in marcas %}
-                <option value="{{ marca.id }}" {% if selected_marca == marca.id|stringformat:"s" %}selected{% endif %}>
-                    {{ marca.nombre }}
-                </option>
-            {% endfor %}
-        </select>
-    </div>
+<div class="filters-wrapper">
+    <form class="filters-section" method="GET" action="{% url 'inventario:index' %}">
+        <div class="filter-group">
+            <label for="marca">Marca</label>
+            <select name="marca" id="marca" class="filter-select">
+                <option value="">Todas las marcas</option>
+                {% for marca in marcas %}
+                    <option value="{{ marca.id }}" {% if selected_marca == marca.id|stringformat:"s" %}selected{% endif %}>
+                        {{ marca.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="filter-group">
-        <label for="ano">Año</label>
-        <select name="ano" id="ano" class="filter-select">
-            <option value="">Todos los años</option>
-            {% for ano in anos %}
-                <option value="{{ ano }}" {% if selected_ano == ano|stringformat:"s" %}selected{% endif %}>
-                    {{ ano }}
-                </option>
-            {% endfor %}
-        </select>
-    </div>
+        <div class="filter-group">
+            <label for="ano">Año</label>
+            <select name="ano" id="ano" class="filter-select">
+                <option value="">Todos los años</option>
+                {% for ano in anos %}
+                    <option value="{{ ano }}" {% if selected_ano == ano|stringformat:"s" %}selected{% endif %}>
+                        {{ ano }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <button type="submit" class="filter-btn">Filtrar</button>
-    
-    {% if selected_marca or selected_ano %}
-        <a href="{% url 'inventario:index' %}" class="filter-btn-clear">Limpiar</a>
-    {% endif %}
-</form>
+        <div class="filter-actions">
+            <button type="submit" class="filter-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                Filtrar
+            </button>
+            
+            {% if selected_marca or selected_ano %}
+                <a href="{% url 'inventario:index' %}" class="filter-btn-clear">Limpiar</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
 
 <!-- Catalog Grid -->
 <div class="catalog-grid">
     {% for vehiculo in vehiculos %}
-        <a href="#" class="car-card" style="text-decoration: none;">
+        <a href="#" class="car-card">
             <div class="car-image-wrapper">
+                <div class="car-badges">
+                    <span class="car-status status-{{ vehiculo.estatus|slugify }}">{{ vehiculo.get_estatus_display }}</span>
+                    <span class="car-year-badge">{{ vehiculo.año }}</span>
+                </div>
+                
                 {% with main_img=vehiculo.imagenes.all.first %}
                     {% if main_img %}
-                        <img src="{{ main_img.imagen.url }}" alt="{{ vehiculo.marca.nombre }} {{ vehiculo.modelo }}" class="car-image">
+                        <img src="{{ main_img.imagen.url }}" alt="{{ vehiculo.marca.nombre }} {{ vehiculo.modelo }}" class="car-image" loading="lazy">
                     {% else %}
-                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--texto-secundario); background:var(--bg-base); position:absolute; top:0; left:0;">
-                            <span>Sin imagen</span>
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--texto-secundario); background:#F3F4F6; position:absolute; top:0; left:0;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                         </div>
                     {% endif %}
                 {% endwith %}
-                <span class="car-status status-{{ vehiculo.estatus|slugify }}">{{ vehiculo.get_estatus_display }}</span>
             </div>
             
             <div class="car-details">
                 <span class="car-marca">{{ vehiculo.marca.nombre }}</span>
-                <h3 class="car-title">
-                    {{ vehiculo.modelo }}
-                    <span class="car-year">{{ vehiculo.año }}</span>
-                </h3>
-                <div class="car-price">
-                    ${{ vehiculo.precio|floatformat:0 }}
+                <h3 class="car-title">{{ vehiculo.modelo }}</h3>
+                
+                <div class="car-price-row">
+                    <div class="car-price">
+                        <span>$</span>{{ vehiculo.precio|floatformat:0 }}
+                    </div>
+                    <div class="car-action">
+                        Ver detalles
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
                 </div>
             </div>
         </a>
     {% empty %}
         <div class="no-results">
+            <div class="no-results-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </div>
             <h3>No se encontraron vehículos</h3>
-            <p>Intenta ajustar los filtros de búsqueda.</p>
+            <p>Intenta ajustar los filtros de búsqueda o limpia tu selección.</p>
         </div>
     {% endfor %}
 </div>
