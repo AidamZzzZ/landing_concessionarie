@@ -422,7 +422,7 @@
             <select name="marca" id="marca" class="filter-select">
                 <option value="">Todas las marcas</option>
                 {% for marca in marcas %}
-                    <option value="{{ marca.id }}" {% if selected_marca == marca.id|stringformat:"s" %}selected{% endif %}>
+                    <option value="{{ marca.id }}" {% if selected_marca == marca.id %}selected{% endif %}>
                         {{ marca.nombre }}
                     </option>
                 {% endfor %}
@@ -433,9 +433,9 @@
             <label for="ano">Año</label>
             <select name="ano" id="ano" class="filter-select">
                 <option value="">Todos los años</option>
-                {% for ano in anos %}
-                    <option value="{{ ano }}" {% if selected_ano == ano|stringformat:"s" %}selected{% endif %}>
-                        {{ ano }}
+                {% for anio in anos %}
+                    <option value="{{ anio }}" {% if selected_ano == anio %}selected{% endif %}>
+                        {{ anio }}
                     </option>
                 {% endfor %}
             </select>

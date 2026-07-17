@@ -8,12 +8,24 @@ def index(request):
     # Get filter parameters from the request
     marca_id = request.GET.get('marca')
     ano = request.GET.get('ano')
+    
+    selected_marca = None
+    selected_ano = None
 
     # Apply filters if they exist
     if marca_id:
-        vehiculos = vehiculos.filter(marca_id=marca_id)
+        try:
+            selected_marca = int(marca_id)
+            vehiculos = vehiculos.filter(marca_id=selected_marca)
+        except ValueError:
+            pass
+            
     if ano:
-        vehiculos = vehiculos.filter(año=ano)
+        try:
+            selected_ano = int(ano)
+            vehiculos = vehiculos.filter(año=selected_ano)
+        except ValueError:
+            pass
 
     # Get all distinct brands and years for the filter dropdowns
     marcas = Marca.objects.all()
@@ -24,7 +36,7 @@ def index(request):
         'vehiculos': vehiculos,
         'marcas': marcas,
         'anos': anos,
-        'selected_marca': marca_id,
-        'selected_ano': ano,
+        'selected_marca': selected_marca,
+        'selected_ano': selected_ano,
     }
     return render(request, 'inventario/index.html', context)
