@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Vehiculo, Marca
 
 def index(request):
@@ -40,3 +40,13 @@ def index(request):
         'selected_ano': selected_ano,
     }
     return render(request, 'inventario/index.html', context)
+
+def detalle(request, vehiculo_id):
+    vehiculo = get_object_or_404(Vehiculo, id=vehiculo_id)
+    imagenes = vehiculo.imagenes.all()
+    
+    context = {
+        'vehiculo': vehiculo,
+        'imagenes': imagenes,
+    }
+    return render(request, 'inventario/detalle.html', context)
