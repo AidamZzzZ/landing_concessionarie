@@ -31,11 +31,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-w(v%m)z=mqvjc+9&c@59b
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
+
 if not DEBUG or os.environ.get('RENDER'):
     ALLOWED_HOSTS = ['*'] # In Render, set your custom domain here, or use '*' and let Render handle routing.
     RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
     if RENDER_EXTERNAL_HOSTNAME:
         ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+        CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
 
 
 # Application definition
