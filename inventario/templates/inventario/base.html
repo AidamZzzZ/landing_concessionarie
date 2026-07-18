@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Catálogo de Vehículos{% endblock %} - Concesionaria</title>
-    <!-- Google Fonts: Inter & Playfair Display -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Nunito & Quicksand (Soft and Rounded) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --color-primario: #0A0A0A;
@@ -18,8 +18,8 @@
             --border-card: #E5E7EB;
             --texto-primario: #111827;
             --texto-secundario: #4B5563;
-            --font-family: 'Inter', sans-serif;
-            --font-display: 'Playfair Display', serif;
+            --font-family: 'Nunito', sans-serif;
+            --font-display: 'Quicksand', sans-serif;
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -85,12 +85,13 @@
         
         {% block extra_css %}{% endblock %}
     </style>
+    <link rel="icon" href="/media/automovil-moderno-aislado_23-2151504578.png">
 </head>
 <body>
 
     <header>
         <div class="header-content">
-            <a href="{% url 'inventario:index' %}" class="logo">Premium Auto</a>
+            <a href="{% url 'inventario:index' %}" class="logo">Luxury Cars</a>
         </div>
     </header>
 
@@ -100,7 +101,7 @@
     </main>
 
     <footer>
-        <p>&copy; {% now "Y" %} Premium Auto. Todos los derechos reservados.</p>
+        <p>&copy; {% now "Y" %} Luxury Cars C,A. Todos los derechos reservados.</p>
     </footer>
 
     {% block extra_js %}{% endblock %}

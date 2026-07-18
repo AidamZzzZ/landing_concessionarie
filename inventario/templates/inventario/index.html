@@ -4,69 +4,39 @@
 
 {% block extra_css %}
 <style>
-    /* Hero Section */
-    .page-header {
-        background-color: var(--color-primario-oscuro);
-        border-radius: 0;
-        padding: 6rem 3rem 8rem;
-        text-align: center;
-        color: white;
-        margin-bottom: -3rem; /* Overlap with filters */
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .page-header::after {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
-        pointer-events: none;
-    }
-
-    .page-header h1 {
-        font-family: var(--font-display, 'Playfair Display', serif);
-        font-size: 4rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        letter-spacing: -0.02em;
-        position: relative;
-        z-index: 1;
-        line-height: 1.1;
-    }
-
-    .page-header p {
-        font-family: var(--font-family);
-        font-size: 1.1rem;
-        opacity: 0.8;
-        max-width: 500px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 1;
-        font-weight: 400;
-        line-height: 1.6;
-        letter-spacing: 0.5px;
-    }
-
-    /* Filters - Editorial/Sharp */
+    /* Header & Filters Area */
     .filters-wrapper {
-        padding: 0 2rem;
-        position: relative;
-        z-index: 10;
-        margin-bottom: 4rem;
+        padding: 4rem 2rem 2rem 2rem;
+        background-color: var(--bg-base);
+    }
+
+    .filters-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .catalog-title {
+        font-family: var(--font-display, 'Quicksand', sans-serif);
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--color-primario-oscuro);
+        margin: 0 auto;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
     }
 
     .filters-section {
         background: var(--bg-card);
         border: 1px solid var(--border-card);
         padding: 2rem;
-        border-radius: 0;
+        border-radius: 2px;
         display: flex;
         gap: 2rem;
         align-items: flex-end;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-        max-width: 1000px;
-        margin: 0 auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     }
 
     .filter-group {
@@ -167,9 +137,10 @@
     /* Grid */
     .catalog-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
         gap: 3rem;
         padding-bottom: 5rem;
+        margin-top: 10px;
     }
 
     /* Cards */
@@ -206,13 +177,15 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s;
-        filter: grayscale(15%);
+        image-rendering: high-quality;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .car-card:hover .car-image {
-        transform: scale(1.05);
-        filter: grayscale(0%);
+        transform: scale(1.05) translateZ(0);
     }
 
     .car-badges {
@@ -274,7 +247,7 @@
     }
 
     .car-title {
-        font-family: var(--font-display, 'Playfair Display', serif);
+        font-family: var(--font-display, 'Quicksand', sans-serif);
         font-size: 1.6rem;
         font-weight: 600;
         color: var(--texto-primario);
@@ -361,7 +334,7 @@
     }
     
     .no-results h3 {
-        font-family: var(--font-display, 'Playfair Display', serif);
+        font-family: var(--font-display, 'Quicksand', sans-serif);
         color: var(--texto-primario);
         font-size: 1.8rem;
         margin-bottom: 0.5rem;
@@ -374,16 +347,12 @@
     }
 
     @media (max-width: 768px) {
-        .page-header {
-            padding: 4rem 1.5rem 6rem;
+        .filters-wrapper {
+            padding: 2rem 1rem;
         }
         
-        .page-header h1 {
-            font-size: 2.8rem;
-        }
-
-        .filters-wrapper {
-            padding: 0 1rem;
+        .catalog-title {
+            font-size: 2.5rem;
         }
 
         .filters-section {
@@ -410,19 +379,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>Catalogo de Vehículos</h1>
-</div>
-
-<!-- Filters -->
+<!-- Catalog Header & Filters -->
 <div class="filters-wrapper">
-    <form class="filters-section" method="GET" action="{% url 'inventario:index' %}">
+    <div class="filters-container">
+        <h1 class="catalog-title">Catalogo de Vehículos</h1>
+        <form class="filters-section" method="GET" action="{% url 'inventario:index' %}">
         <div class="filter-group">
             <label for="marca">Marca</label>
             <select name="marca" id="marca" class="filter-select">
                 <option value="">Todas las marcas</option>
                 {% for marca in marcas %}
-                    <option value="{{ marca.id }}" {% if selected_marca == marca.id|stringformat:"s" %}selected{% endif %}>
+                    <option value="{{ marca.id }}" {% if selected_marca == marca.id %}selected{% endif %}>
                         {{ marca.nombre }}
                     </option>
                 {% endfor %}
@@ -433,9 +400,9 @@
             <label for="ano">Año</label>
             <select name="ano" id="ano" class="filter-select">
                 <option value="">Todos los años</option>
-                {% for ano in anos %}
-                    <option value="{{ ano }}" {% if selected_ano == ano|stringformat:"s" %}selected{% endif %}>
-                        {{ ano }}
+                {% for anio in anos %}
+                    <option value="{{ anio }}" {% if selected_ano == anio %}selected{% endif %}>
+                        {{ anio }}
                     </option>
                 {% endfor %}
             </select>
@@ -451,13 +418,14 @@
                 <a href="{% url 'inventario:index' %}" class="filter-btn-clear">Limpiar</a>
             {% endif %}
         </div>
-    </form>
+        </form>
+    </div>
 </div>
 
 <!-- Catalog Grid -->
 <div class="catalog-grid">
     {% for vehiculo in vehiculos %}
-        <a href="#" class="car-card">
+        <a href="{% url 'inventario:detalle' vehiculo.id %}" class="car-card">
             <div class="car-image-wrapper">
                 <div class="car-badges">
                     <span class="car-status status-{{ vehiculo.estatus|slugify }}">{{ vehiculo.get_estatus_display }}</span>
